@@ -1,0 +1,53 @@
+postgresql:
+
+  image:
+    repository: bitnami/postgresql
+  ## Use the PostgreSQL chart dependency.
+  ##
+  enabled: true
+
+  ### PostgreSQL User to create.
+  ##
+  postgresqlUsername: postgres
+
+  ## PostgreSQL Password for the new user.
+  ## If not set, a random 10 characters password will be used.
+  ##
+  # postgresqlPassword: 
+
+  ## PostgreSQL Database to create.
+  ##
+  postgresqlDatabase: xebula
+
+  ## PostgreSQL service port
+  service:
+    port: 5433
+
+  ## Persistent Volume Storage configuration for PostgreSQL.
+  ##
+  ## Ref: https://kubernetes.io/docs/user-guide/persistent-volumes
+  ##
+  persistence:
+    ## Enable PostgreSQL persistence using Persistent Volume Claims.
+    ##
+    enabled: true
+
+    ## Persistent Volume Storage Class to be used by PersistentVolumes created
+    ## for PostgreSQL.
+    ##
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    storageClass:
+
+    ## Persistent Volume Access Mode.
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## Persistent Volume Storage Size.
+    ##
+    size: 2Gi  
