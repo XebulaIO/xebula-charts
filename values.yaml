@@ -51,3 +51,23 @@ postgresql:
     ## Persistent Volume Storage Size.
     ##
     size: 2Gi  
+
+redis:
+  ## Use the redis chart dependency.
+  ##
+  enabled: true
+
+  redisPort: 6379
+
+  master:
+    persistence:
+      enabled: true
+      storageClass:
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+
+  ##
+  ## Disable cluster management by default.
+  cluster:
+    enabled: false    
