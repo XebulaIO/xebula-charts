@@ -71,3 +71,47 @@ redis:
   ## Disable cluster management by default.
   cluster:
     enabled: false    
+
+mongodb:
+  ## Use the MongoDB chart dependency.
+  ##
+  enabled: true
+
+  ## MongoDB root user password
+  ##
+
+  ## MongoDB database to create
+  ##
+  mongodbDatabase: yourDatabaseName
+
+  ## MongoDB service port
+  service:
+    port: 27017
+
+  ## Persistent Volume Storage configuration for MongoDB
+  ##
+  ## Ref: https://kubernetes.io/docs/user-guide/persistent-volumes
+  ##
+  persistence:
+    ## Enable MongoDB persistence using Persistent Volume Claims.
+    ##
+    enabled: true
+
+    ## Persistent Volume Storage Class to be used by PersistentVolumes created
+    ## for MongoDB.
+    ##
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ## set, choosing the default provisioner. (gp2 on AWS, standard on GKE, AWS & OpenStack)
+    ##
+    storageClass:
+
+    ## Persistent Volume Access Mode.
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## Persistent Volume Storage Size.
+    ##
+    size: 2Gi
