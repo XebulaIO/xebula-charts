@@ -1,3 +1,8 @@
+gateway:
+  name: xebula-api-gateway
+  image: enesserol7/xebula-api-gateway
+  imageTag: 9bb62f1
+
 postgresql:
 
   image:

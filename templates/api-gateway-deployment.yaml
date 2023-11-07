@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.gateway.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.gateway.name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.gateway.name }}
+    spec:
+      containers:
+        - name: {{ .Values.gateway.name }}
+          image: "{{ .Values.gateway.image }}:{{ .Values.gateway.imageTag }}"
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          command: ["/usr/bin/krakend"]
+          args: ["run", "-d", "-c", "/etc/krakend/krakend.json", "-p", "8080"]
+      imagePullSecrets:
+        - name: regcred
