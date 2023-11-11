@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash-dep
+  namespace: elk-stack
+spec:
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - name: logstash
+          image: docker.elastic.co/logstash/logstash:8.9.0
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5044
+              name: syslog-tcp
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/logstash/pipeline # Burayı /usr/share/logstash/config/conf.d olarak değiştirin.
+      volumes:
+        - name: config
+          configMap:
+            name: logstash-configmap

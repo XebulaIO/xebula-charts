@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-configmap
+  namespace: elk-stack
+data:
+  logstash.conf: |
+    input {
+      tcp {
+        port => 5044
+        codec => json
+      }
+    }
+
+    filter { 
+      json {
+        source => "message"
+        remove_field => ["message"]
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["elasticsearch.elk-stack:9200"]
+      }
+    }
