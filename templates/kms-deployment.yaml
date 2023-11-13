@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-kms
+  labels:
+    app: xebula-kms
+spec:
+  selector:
+    matchLabels:
+      app: xebula-kms
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-kms
+    spec:
+      containers:
+        - name: xebula-kms
+          image: enesserol7/xebula-kms:4bda58b
+          ports:
+            - containerPort: 9000
+              name: api-http
+          env:
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: vault
+            - name: VAULT_ADDRESSURL
+              value: "http://vault.vault.svc.cluster.local:8200"
+            - name: VAULT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: key
+                  name: vault
+            - name: VAULT_MAINPATH
+              value: "wallet"
+            - name: VAULT_KEYPATH
+              value: "/dev"
+            - name: LOGSTASH_HOST
+              value: logstash-svc.elk-stack
+            - name: LOGSTASH_PORT
+              value: "5044"
+            - name: SERVER_PORT
+              value: "9000"
+      imagePullSecrets:
+        - name: regcred
