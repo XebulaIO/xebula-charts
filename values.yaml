@@ -23,10 +23,30 @@ postgresql:
   ## PostgreSQL Database to create.
   ##
   postgresqlDatabase: xebula
+  
 
   ## PostgreSQL service port
-  service:
-    port: 5433
+  primary:
+    extraEnvVars:
+    - name: POSTGRES_USER
+      valueFrom:
+        configMapKeyRef:
+          name: db-secret-credentials
+          key: POSTGRES_USER
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        configMapKeyRef:
+          name: db-secret-credentials
+          key: POSTGRES_PASSWORD
+    - name: POSTGRES_DB
+      valueFrom:
+        configMapKeyRef:
+          name: db-secret-credentials
+          key: POSTGRES_DB    
+    service:
+      ports:
+        postgresql: 5432
+  fullnameOverride: postgresdb
 
   ## Persistent Volume Storage configuration for PostgreSQL.
   ##
