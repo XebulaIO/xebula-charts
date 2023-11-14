@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: xebula-feed-service-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/issuer: letsencrypt-production
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: feed-dev.xebula.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: xebula-feed-service
+                port:
+                  number: 80

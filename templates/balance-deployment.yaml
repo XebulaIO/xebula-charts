@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-balance-service
+  labels:
+    app: xebula-balance-service
+spec:
+  selector:
+    matchLabels:
+      app: xebula-balance-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-balance-service
+    spec:
+      containers:
+        - name: xebula-balance-service
+          image: enesserol7/xebula-balance-service:3792452
+          ports:
+            - containerPort: 80
+              name: api-http
+          env:
+            - name: SERVER_PORT
+              value: "9000"
+            - name: CORS_ALLOWORIGIN
+              value: https://dev.xebula.io
+            - name: DATABASE_IP
+              value: postgresdb
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: xebula
+            - name: DATABASE_SSLMODE
+              value: "disable"
+            - name: DATABASE_MAXIDLE
+              value: "30"
+            - name: DATABASE_MAXOPEN
+              value: "30"
+            - name: DATABASE_MAXLIFETIME
+              value: "60"
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: do-pgsql
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: do-pgsql
+            - name: LOGSTASH_HOST
+              value: logstash-svc.elk-stack
+            - name: LOGSTASH_PORT
+              value: "5004"
+      imagePullSecrets:
+        - name: regcred

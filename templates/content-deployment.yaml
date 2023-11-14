@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-content-service
+  labels:
+    app: xebula-content-service
+spec:
+  selector:
+    matchLabels:
+      app: xebula-content-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-content-service
+    spec:
+      containers:
+        - name: xebula-content-service
+          image: enesserol7/xebula-content-service:fce846f
+          ports:
+            - containerPort: 80
+              name: api-http
+          env:
+            - name: CORS_ALLOWORIGIN
+              value: https://dev.xebula.io
+            - name: DATABASE_IP
+              value: db-postgresql-ams3-38407-do-user-6684848-0.b.db.ondigitalocean.com
+            - name: DATABASE_PORT
+              value: "25060"
+            - name: DATABASE_NAME
+              value: defaultdb
+            - name: DATABASE_SSLMODE
+              value: require
+            - name: DATABASE_MAXIDLE
+              value: "30"
+            - name: DATABASE_MAXOPEN
+              value: "30"
+            - name: DATABASE_MAXLIFETIME
+              value: "60"
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: do-pgsql
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: do-pgsql
+            - name: REDIS_HOST
+              value: db-redis-ams3-47526-do-user-6684848-0.b.db.ondigitalocean.com
+            - name: REDIS_PORT
+              value: "25061"
+            - name: REDIS_SCHEME
+              value: rediss
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: do-redis
+            - name: MONGO_PROTOCOL
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: protocol
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: password
+            - name: MONGO_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: host
+            - name: MONGO_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: port
+            - name: MONGO_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: database
+            - name: MONGO_OPTIONS
+              valueFrom:
+                secretKeyRef:
+                  name: do-mongodb
+                  key: options
+            - name: SERVER_PORT
+              value: "80"
+      imagePullSecrets:
+        - name: regcred

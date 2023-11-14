@@ -1,8 +1,20 @@
 1:do-pgsql secret ını oluştur ->  xebula-keycloak deployment kullanıyor
-xctl get secret do-pgsql -o yaml > do-pgsql-secret.yaml ile alıp oluşturabilirsin
+kubectl get secret do-pgsql -o yaml > do-pgsql-secret.yaml ile alıp oluşturabilirsin
 
 2: db-secret-credentials config map ini oluştur
-xctl get cm db-secret-credentials -o yaml
+kubectl get cm db-secret-credentials -o yaml
 
 3: vault secret ını oluştur
-xctl get secret vault -o yaml
+kubectl get secret vault -o yaml
+
+4: sendgrid secret ını oluştur
+kubectl  get secret sendgrid -o yaml
+
+5: do-redis-secret ını oluştur
+kubectl get secret do-redis -o yaml
+
+6: do-mongodb secret ını oluştur
+kubectl get secrets do-mongodb -o yaml
+
+7: xebula-rsa secret ını oluştur
+kubectl get secret xebula-rsa -o yaml
