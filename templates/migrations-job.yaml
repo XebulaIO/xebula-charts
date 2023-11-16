@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: xebula-migrations
-          image: enesserol7/xebula-migrations:23b08cc
+          image: enesserol7/xebula-migrations:a906e47
           env:
             - name: DATABASE_IP
               value: postgresdb

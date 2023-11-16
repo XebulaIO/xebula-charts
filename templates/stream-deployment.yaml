@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-stream-service
+  labels:
+    app: xebula-stream-service
+spec:
+  selector:
+    matchLabels:
+      app: xebula-stream-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-stream-service
+    spec:
+      containers:
+        - name: xebula-stream-service
+          image: enesserol7/xebula-stream-service:4928abe
+          ports:
+            - containerPort: 4000
+              name: api-http
+          env:
+            - name: MONGO_SCHEMA
+              value: mongodb
+            - name: MONGO_HOST
+              value: mongodb
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_USER
+              value: admin
+            - name: MONGO_PASSWORD
+              value: password
+            - name: MONGO_DATABASE
+              value: xebula
+            - name: PG_HOST
+              value: postgresdb
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_DATABASE
+              value: xebula
+            - name: PG_SSL
+              value: disable
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: do-pgsql
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: do-pgsql
+            - name: PORT
+              value: "4000"
+      imagePullSecrets:
+        - name: regcred

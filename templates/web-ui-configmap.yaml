@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xebula-web-ui-config
+data:
+  env.development: |
+    VUE_APP_API_URL=https://dev.xebula.io
+    VUE_APP_STREAM_URL=https://stream-dev.xebula.io
+    VUE_APP_I18N_LOCALE=en
+    VUE_APP_I18N_FALLBACK_LOCALE=en
+    NODE_ENV=development

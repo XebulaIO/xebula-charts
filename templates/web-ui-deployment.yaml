@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-web-ui
+  labels:
+    app: xebula-web-ui
+spec:
+  selector:
+    matchLabels:
+      app: xebula-web-ui
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-web-ui
+    spec:
+      containers:
+        - name: xebula-web-ui
+          image: enesserol7/xebula-web-ui:ba824ba
+          ports:
+            - containerPort: 80
+              name: api-http
+          envFrom:
+            - configMapRef:
+                name: xebula-web-ui-config
+      imagePullSecrets:
+        - name: regcred
