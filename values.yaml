@@ -3,6 +3,12 @@ gateway:
   image: enesserol7/xebula-api-gateway
   imageTag: 9bb62f1
 
+rabbitmq:
+  auth:
+    enabled: true
+    username: yourUsername
+    password: yourPassword
+    
 postgresql:
 
   image:
