@@ -16,7 +16,7 @@ spec:
           image: enesserol7/xebula-migrations:a906e47
           env:
             - name: DATABASE_IP
-              value: postgresdb
+              value: xebula-postgresql.default.svc.cluster.local
             - name: DATABASE_PORT
               value: "5432"
             - name: DATABASE_NAME
@@ -30,13 +30,10 @@ spec:
             - name: DATABASE_MAXLIFETIME
               value: "60"
             - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
       restartPolicy: OnFailure

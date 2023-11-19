@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: xebula-balance-service
-          image: enesserol7/xebula-balance-service:3792452
+          image: enesserol7/xebula-balance-service:bfebd7d
           ports:
             - containerPort: 80
               name: api-http
@@ -26,7 +26,7 @@ spec:
             - name: CORS_ALLOWORIGIN
               value: https://dev.xebula.io
             - name: DATABASE_IP
-              value: postgresdb
+              value: xebula-postgresql.default.svc.cluster.local
             - name: DATABASE_PORT
               value: "5432"
             - name: DATABASE_NAME
@@ -40,15 +40,12 @@ spec:
             - name: DATABASE_MAXLIFETIME
               value: "60"
             - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
             - name: LOGSTASH_HOST
               value: logstash-svc.elk-stack
             - name: LOGSTASH_PORT

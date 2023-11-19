@@ -24,7 +24,7 @@ spec:
             - name: MONGO_SCHEMA
               value: mongodb
             - name: MONGO_HOST
-              value: mongodb
+              value: xebula-mongodb.default.svc.cluster.local
             - name: MONGO_PORT
               value: "27017"
             - name: MONGO_USER
@@ -42,15 +42,12 @@ spec:
             - name: PG_SSL
               value: disable
             - name: PG_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: PG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
             - name: PORT
               value: "4000"
       imagePullSecrets:

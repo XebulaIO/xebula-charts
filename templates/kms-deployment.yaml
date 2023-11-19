@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: xebula-kms
-          image: enesserol7/xebula-kms:4bda58b
+          image: enesserol7/xebula-kms:c9b04cc
           ports:
             - containerPort: 9000
               name: api-http

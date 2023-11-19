@@ -16,40 +16,48 @@ spec:
     spec:
       containers:
         - name: xebula-wallet-api
-          image: enesserol7/xebula-wallet-api:f7e84f7
+          image: enesserol7/xebula-wallet-api:ed0a3c6
           ports:
             - containerPort: 9000
               name: api-http
           env:
+            - name: RABBIT_HOST
+              value: xebula-rabbitmq.default.svc.cluster.local
+            - name: RABBIT_PORT
+              value: "5672"
             - name: RABBIT_SCHEME
               value: amqp
             - name: RABBIT_USER
+              value: yourUsername
+            - name: RABBIT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: username
-                  name: rabbitmq
-            - name: RABBIT_HOST
-              value: 10.152.183.45
-            - name: RABBIT_PORT
-              value: "5672"
-            - name: RABBIT_PASSWORD
-              value: "qc98n4iGD7MYXMBVFcIO2mtB5voDuV_n"
-            - name: REDIS_PASSWORD
-              value: UAG3xfy9tmv3qgm
+                  key: rabbitmq-password
+                  name: xebula-rabbitmq
             - name: REDIS_HOST
-              value: redis.redis
+              value: xebula-redis-master.default.svc.cluster.local
             - name: REDIS_PORT
               value: "6379"
+            - name: REDIS_SCHEME
+              value: redis
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: xebula-redis
             - name: MONGO_SCHEMA
               value: mongodb
             - name: MONGO_HOST
-              value: mongodb
+              value: xebula-mongodb.default.svc.cluster.local
             - name: MONGO_PORT
               value: "27017"
             - name: MONGO_USER
-              value: admin
+              value: root
             - name: MONGO_PASSWORD
-              value: password
+              valueFrom:
+                secretKeyRef:
+                  key: mongodb-root-password
+                  name: xebula-mongodb
             - name: MONGO_DATABASE
               value: xebula
             - name: TRONWEB_FULLNODE

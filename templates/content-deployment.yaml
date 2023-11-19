@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: xebula-content-service
-          image: enesserol7/xebula-content-service:fce846f
+          image: enesserol7/xebula-content-service:2706666
           ports:
             - containerPort: 80
               name: api-http
@@ -24,13 +24,13 @@ spec:
             - name: CORS_ALLOWORIGIN
               value: https://dev.xebula.io
             - name: DATABASE_IP
-              value: db-postgresql-ams3-38407-do-user-6684848-0.b.db.ondigitalocean.com
+              value: xebula-postgresql.default.svc.cluster.local
             - name: DATABASE_PORT
-              value: "25060"
+              value: "5432"
             - name: DATABASE_NAME
-              value: defaultdb
+              value: xebula
             - name: DATABASE_SSLMODE
-              value: require
+              value: disable
             - name: DATABASE_MAXIDLE
               value: "30"
             - name: DATABASE_MAXOPEN
@@ -38,61 +38,40 @@ spec:
             - name: DATABASE_MAXLIFETIME
               value: "60"
             - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
             - name: REDIS_HOST
-              value: db-redis-ams3-47526-do-user-6684848-0.b.db.ondigitalocean.com
+              value: xebula-redis-master.default.svc.cluster.local
             - name: REDIS_PORT
-              value: "25061"
+              value: "6379"
             - name: REDIS_SCHEME
               value: rediss
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-redis
+                  key: redis-password
+                  name: xebula-redis
             - name: MONGO_PROTOCOL
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: protocol
+              value: mongodb
             - name: MONGO_USER
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: user
+              value: root
             - name: MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: do-mongodb
-                  key: password
+                  key: mongodb-root-password
+                  name: xebula-mongodb
             - name: MONGO_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: host
+              value: xebula-mongodb.default.svc.cluster.local
             - name: MONGO_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: port
+              value: "27017"
             - name: MONGO_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: database
+              value: xebula
             - name: MONGO_OPTIONS
-              valueFrom:
-                secretKeyRef:
-                  name: do-mongodb
-                  key: options
+              value:
             - name: SERVER_PORT
               value: "80"
       imagePullSecrets:

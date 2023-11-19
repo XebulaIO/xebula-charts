@@ -21,10 +21,20 @@ spec:
             - containerPort: 80
               name: api-http
           env:
+            - name: CLUSTER_PRIVATEKEY
+              valueFrom:
+                secretKeyRef:
+                  key: privatekey
+                  name: xebula-rsa
+            - name: CLUSTER_PUBLICKEY
+              valueFrom:
+                secretKeyRef:
+                  key: publickey
+                  name: xebula-rsa
             - name: CORS_ALLOWORIGIN
               value: https://dev.xebula.io
             - name: DATABASE_IP
-              value: postgresdb
+              value: xebula-postgresql.default.svc.cluster.local
             - name: DATABASE_PORT
               value: "5432"
             - name: DATABASE_NAME
@@ -38,36 +48,30 @@ spec:
             - name: DATABASE_MAXLIFETIME
               value: "60"
             - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
             - name: MONGO_PROTOCOL
               value: mongodb
             - name: MONGO_USER
-              valueFrom:
-                secretKeyRef:
-                  key: MONGO_ROOT_USERNAME
-                  name: mongodb-secret
+              value: root
             - name: MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: MONGO_ROOT_PASSWORD
-                  name: mongodb-secret
+                  key: mongodb-root-password
+                  name: xebula-mongodb
             - name: MONGO_HOST
-              value: mongodb
+              value: xebula-mongodb.default.svc.cluster.local
             - name: MONGO_PORT
               value: "27017"
             - name: MONGO_DATABASE
               value: xebula
             - name: MONGO_OPTIONS
             - name: REDIS_HOST
-              value: redis.redis
+              value: xebula-redis-master.default.svc.cluster.local
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_SCHEME
@@ -75,37 +79,32 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-redis
+                  key: redis-password
+                  name: xebula-redis
             - name: RABBIT_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: rabbitmq
+              value: xebula-rabbitmq.default.svc.cluster.local
             - name: RABBIT_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: port
-                  name: rabbitmq
+              value: "5672"
             - name: RABBIT_SCHEME
-              valueFrom:
-                secretKeyRef:
-                  key: scheme
-                  name: rabbitmq
+              value: amqp
             - name: RABBIT_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: rabbitmq
+              value: yourUsername
             - name: RABBIT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: rabbitmq
+                  key: rabbitmq-password
+                  name: xebula-rabbitmq
+            - name: JWT_COOKIEDOMAIN
+              value: xebula.io
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: jwt-secret
             - name: LOGSTASH_HOST
               value: logstash-svc.elk-stack
             - name: LOGSTASH_PORT
-              value: "5000"
+              value: "5044"
             - name: WALLETAPI_HOST
               value: xebula-wallet-api.default.svc.cluster.local
             - name: WALLETAPI_PORT
@@ -117,6 +116,14 @@ spec:
             - name: FEEDSERVICE_HOST
               value: xebula-feed-service.default.svc.cluster.local
             - name: FEEDSERVICE_PORT
+              value: "9000"
+            - name: KMSSERVICE_HOST
+              value: xebula-kms.default.svc.cluster.local
+            - name: KMSSERVICE_PORT
+              value: "9000"
+            - name: MPCSERVICE_HOST
+              value: xebula-mpc-service.default.svc.cluster.local
+            - name: MPCSERVICE_PORT
               value: "9000"
       imagePullSecrets:
         - name: regcred

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: xebula-user-api
-          image: enesserol7/xebula-user-api:53c595e
+          image: enesserol7/xebula-user-api:3a48fd8
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -25,7 +25,7 @@ spec:
             - name: CORS_ALLOWORIGIN
               value: https://dev.xebula.io
             - name: DATABASE_IP
-              value: postgresdb
+              value: xebula-postgresql.default.svc.cluster.local
             - name: DATABASE_PORT
               value: "5432"
             - name: DATABASE_NAME
@@ -39,27 +39,27 @@ spec:
             - name: DATABASE_MAXLIFETIME
               value: "60"
             - name: DATABASE_USER
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: do-pgsql
+              value: xebula
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: do-pgsql
+                  key: postgres-password
+                  name: xebula-postgresql
             - name: FEEDSERVICE_HOST
               value: xebula-feed-service.default.svc.cluster.local
             - name: FEEDSERVICE_PORT
               value: "9000"
             - name: REDIS_HOST
-              value: redis.redis
+              value: xebula-redis-master.default.svc.cluster.local
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_SCHEME
               value: redis
             - name: REDIS_PASSWORD
-              value: UAG3xfy9tmv3qgm
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: xebula-redis
             - name: JWT_COOKIEDOMAIN
               value: xebula.io
             - name: JWT_SECRET
