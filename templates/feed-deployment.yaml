@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: xebula-feed-service
-          image: enesserol7/xebula-feed-service:4957f79
+          image: enesserol7/xebula-feed-service:b228268
           ports:
             - containerPort: 9000
               name: api-http
