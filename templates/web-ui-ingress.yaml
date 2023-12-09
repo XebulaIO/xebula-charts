@@ -10,7 +10,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: dev.xebula.io
+  - host: xebula.online
     http:
       paths:
       - path: /
@@ -22,5 +22,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - dev.xebula.io
+    - xebula.online
     secretName: xebula-web-tls

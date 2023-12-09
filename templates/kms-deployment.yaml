@@ -20,19 +20,9 @@ spec:
           ports:
             - containerPort: 9000
               name: api-http
-          env:
-            - name: VAULT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: token
-                  name: vault
+          env:            
             - name: VAULT_ADDRESSURL
               value: "http://vault.vault.svc.cluster.local:8200"
-            - name: VAULT_KEY
-              valueFrom:
-                secretKeyRef:
-                  key: key
-                  name: vault
             - name: VAULT_MAINPATH
               value: "wallet"
             - name: VAULT_KEYPATH

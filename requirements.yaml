@@ -16,3 +16,7 @@ dependencies:
   version: 12.5.1
   repository: https://charts.bitnami.com/bitnami
   condition: rabbitmq.auth.enabled    
+- name: ingress-nginx
+  version: 4.0.19
+  repository: https://kubernetes.github.io/ingress-nginx
+  condition: nginx-ingress.enabled

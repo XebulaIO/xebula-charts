@@ -5,6 +5,8 @@ metadata:
   labels:
     app: xebula-web-ui
 spec:
+  externalIPs:
+  - 173.212.252.17
   type: ClusterIP
   ports:
   - port: 80

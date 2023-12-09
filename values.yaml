@@ -1,3 +1,8 @@
+nginx-ingress:
+  enabled: true
+  controller:
+    publishService:
+      enabled: true
 gateway:
   name: xebula-api-gateway
   image: enesserol7/xebula-api-gateway
