@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-mpc-service
+  labels:
+    app: xebula-mpc-service
+spec:
+  selector:
+    matchLabels:
+      app: xebula-mpc-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-mpc-service
+    spec:
+      containers:
+        - name: xebula-mpc-service
+          image: enesserol7/xebula-mpc-service:4dd0a40
+          ports:
+            - containerPort: 9000
+              name: api-http
+          env:
+            - name: CLUSTER_PRIVATEKEY
+              valueFrom:
+                secretKeyRef:
+                  key: privatekey
+                  name: xebula-rsa
+            - name: CLUSTER_PUBLICKEY
+              valueFrom:
+                secretKeyRef:
+                  key: publickey
+                  name: xebula-rsa
+            - name: GRPCSERVER_PORT
+              value: "9000"
+            - name: MPC
+              value: MPC/1.0
+      imagePullSecrets:
+        - name: regcred

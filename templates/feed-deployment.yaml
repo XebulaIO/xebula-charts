@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-feed-service
+  labels:
+    app: xebula-feed-service
+spec:
+  selector:
+    matchLabels:
+      app: xebula-feed-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-feed-service
+    spec:
+      containers:
+        - name: xebula-feed-service
+          image: enesserol7/xebula-feed-service:b228268
+          ports:
+            - containerPort: 9000
+              name: api-http
+          env:
+            - name: MAIL_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  key: apiKey
+                  name: sendgrid
+            - name: MAIL_NAME
+              value: Xebula
+            - name: MAIL_EMAIL
+              value: administrator@xebula.io
+            - name: LOGSTASH_HOST
+              value: logstash-svc.elk-stack
+            - name: LOGSTASH_PORT
+              value: "5044"
+            - name: SERVER_PORT
+              value: "9000"
+      imagePullSecrets:
+        - name: regcred

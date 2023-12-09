@@ -1,8 +1,19 @@
+nginx-ingress:
+  enabled: true
+  controller:
+    publishService:
+      enabled: true
 gateway:
   name: xebula-api-gateway
   image: enesserol7/xebula-api-gateway
   imageTag: 9bb62f1
 
+rabbitmq:
+  auth:
+    enabled: true
+    username: yourUsername
+    password: yourPassword
+    
 postgresql:
 
   image:
@@ -23,10 +34,19 @@ postgresql:
   ## PostgreSQL Database to create.
   ##
   postgresqlDatabase: xebula
+  
 
   ## PostgreSQL service port
-  service:
-    port: 5433
+  primary:
+    extraEnvVars:
+    - name: POSTGRES_USER
+      value: xebula
+
+    - name: POSTGRES_DB
+      value: xebula  
+    service:
+      ports:
+        postgresql: 5432
 
   ## Persistent Volume Storage configuration for PostgreSQL.
   ##

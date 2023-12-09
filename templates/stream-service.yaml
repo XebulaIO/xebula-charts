@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xebula-stream-service
+  labels:
+    app: xebula-stream-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4000
+      protocol: TCP
+      targetPort: 4000
+  selector:
+    app: xebula-stream-service

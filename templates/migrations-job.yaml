@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: xebula-migrations
+  labels:
+    jobgroup: xebula-jobs
+spec:
+  template:
+    metadata:
+      name: xebula-migrations
+      labels:
+        jobgroup: xebula-jobs
+    spec:
+      containers:
+        - name: xebula-migrations
+          image: enesserol7/xebula-migrations:a906e47
+          env:
+            - name: DATABASE_IP
+              value: xebula-postgresql.default.svc.cluster.local
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: xebula
+            - name: DATABASE_SSLMODE
+              value: disable
+            - name: DATABASE_MAXIDLE
+              value: "30"
+            - name: DATABASE_MAXOPEN
+              value: "30"
+            - name: DATABASE_MAXLIFETIME
+              value: "60"
+            - name: DATABASE_USER
+              value: xebula
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgres-password
+                  name: xebula-postgresql
+      restartPolicy: OnFailure

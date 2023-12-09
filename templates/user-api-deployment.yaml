@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-user-api
+  labels:
+    app: xebula-user-api
+spec:
+  selector:
+    matchLabels:
+      app: xebula-user-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-user-api
+    spec:
+      containers:
+        - name: xebula-user-api
+          image: enesserol7/xebula-user-api:3a48fd8
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: api-http
+          env:
+            - name: CORS_ALLOWORIGIN
+              value: https://dev.xebula.io
+            - name: DATABASE_IP
+              value: xebula-postgresql.default.svc.cluster.local
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: xebula
+            - name: DATABASE_SSLMODE
+              value: disable
+            - name: DATABASE_MAXIDLE
+              value: "30"
+            - name: DATABASE_MAXOPEN
+              value: "30"
+            - name: DATABASE_MAXLIFETIME
+              value: "60"
+            - name: DATABASE_USER
+              value: xebula
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgres-password
+                  name: xebula-postgresql
+            - name: FEEDSERVICE_HOST
+              value: xebula-feed-service.default.svc.cluster.local
+            - name: FEEDSERVICE_PORT
+              value: "9000"
+            - name: REDIS_HOST
+              value: xebula-redis-master.default.svc.cluster.local
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_SCHEME
+              value: redis
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: xebula-redis
+            - name: JWT_COOKIEDOMAIN
+              value: xebula.io
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: jwt-secret
+            - name: LOGSTASH_HOST
+              value: logstash-svc.elk-stack
+            - name: LOGSTASH_PORT
+              value: "5000"
+            - name: KEYCLOAK_REALM
+              value: xebula
+            - name: KEYCLOAK_AUTHSERVICEURL
+              value: https://accounts-dev.xebula.io
+            - name: KEYCLOAK_CLIENTID
+              value: xebula-service-client
+            - name: KEYCLOAK_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: keycloak
+            - name: SERVER_PORT
+              value: "80"
+            - name: CLUSTER_PRIVATEKEY
+              valueFrom:
+                secretKeyRef:
+                  key: privatekey
+                  name: xebula-rsa
+            - name: GRPCSERVER_PORT
+              value: "9000"
+      imagePullSecrets:
+        - name: regcred

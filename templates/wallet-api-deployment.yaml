@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xebula-wallet-api
+  labels:
+    app: xebula-wallet-api
+spec:
+  selector:
+    matchLabels:
+      app: xebula-wallet-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xebula-wallet-api
+    spec:
+      containers:
+        - name: xebula-wallet-api
+          image: enesserol7/xebula-wallet-api:ed0a3c6
+          ports:
+            - containerPort: 9000
+              name: api-http
+          env:
+            - name: RABBIT_HOST
+              value: xebula-rabbitmq.default.svc.cluster.local
+            - name: RABBIT_PORT
+              value: "5672"
+            - name: RABBIT_SCHEME
+              value: amqp
+            - name: RABBIT_USER
+              value: yourUsername
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rabbitmq-password
+                  name: xebula-rabbitmq
+            - name: REDIS_HOST
+              value: xebula-redis-master.default.svc.cluster.local
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_SCHEME
+              value: redis
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: xebula-redis
+            - name: MONGO_SCHEMA
+              value: mongodb
+            - name: MONGO_HOST
+              value: xebula-mongodb.default.svc.cluster.local
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_USER
+              value: root
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mongodb-root-password
+                  name: xebula-mongodb
+            - name: MONGO_DATABASE
+              value: xebula
+            - name: TRONWEB_FULLNODE
+              value: https://nile.trongrid.io
+            - name: TRONWEB_SOLIDITYNODE
+              value: https://nile.trongrid.io
+            - name: TRONWEB_EVENTSERVER
+              value: https://nile.trongrid.io
+            - name: ETH_RPC_URL
+              value: https://eth-goerli.public.blastapi.io
+            - name: BITCOIN_RPC_URL
+              value: https://btc.getblock.io/f9639c45-3cbc-452d-b874-d006f3297840/testnet/
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: privatekey
+                  name: xebula-rsa
+            - name: PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: privatekey
+                  name: xebula-rsa
+            - name: MPC_SERVICE_URL
+              value: xebula-mpc-service.default.svc.cluster.local:9000
+            - name: KMS_SERVICE_URL
+              value: xebula-kms.default.svc.cluster.local:9000
+      imagePullSecrets:
+        - name: regcred
